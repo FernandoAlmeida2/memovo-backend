@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique @db.VarChar(255)
+  password  String     @db.VarChar(255)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Session   Session[]
+  Practice  Practice[]
+  UserStat  UserStat[]
+
+  @@map("users")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model Practice {
+  id           Int            @id @default(autoincrement())
+  userId       Int
+  User         User           @relation(fields: [userId], references: [id])
+  score        String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  PracticeCard PracticeCard[]
+
+  @@map("practices")
+}
+
+model Card {
+  id           Int            @id @default(autoincrement())
+  hanzi        String
+  pinyin       String
+  videoId      String
+  categoryId   Int
+  Category     Category       @relation(fields: [categoryId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  PracticeCard PracticeCard[]
+  Translation  Translation[]
+  UserStat     UserStat[]
+
+  @@map("cards")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Card      Card[]
+
+  @@map("categories")
+}
+
+model PracticeCard {
+  id         Int          @id @default(autoincrement())
+  cardId     Int
+  Card       Card         @relation(fields: [cardId], references: [id])
+  practiceId Int
+  Practice   Practice     @relation(fields: [practiceId], references: [id])
+  result     ResultStatus
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@map("practiceCards")
+}
+
+enum ResultStatus {
+  HIT
+  MISS
+  EASY
+}
+
+model Translation {
+  id          Int      @id @default(autoincrement())
+  cardId      Int
+  Card        Card     @relation(fields: [cardId], references: [id])
+  translation String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("translations")
+}
+
+model UserStat {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  User        User     @relation(fields: [userId], references: [id])
+  cardId      Int
+  Card        Card     @relation(fields: [cardId], references: [id])
+  easeCounter Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("userStats")
+}

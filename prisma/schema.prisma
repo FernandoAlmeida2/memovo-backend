@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String
-  email     String     @unique @db.VarChar(255)
-  password  String     @db.VarChar(255)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Session   Session[]
-  Practice  Practice[]
-  UserStat  UserStat[]
+  id             Int        @id @default(autoincrement())
+  name           String
+  email          String     @unique @db.VarChar(255)
+  password       String     @db.VarChar(255)
+  currentSession Int        @default(0)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  Session        Session[]
+  Practice       Practice[]
+  UserCard       UserCard[]
 
   @@map("users")
 }
@@ -58,7 +59,7 @@ model Card {
   updatedAt    DateTime       @updatedAt
   PracticeCard PracticeCard[]
   Translation  Translation[]
-  UserStat     UserStat[]
+  UserCard     UserCard[]
 
   @@map("cards")
 }
@@ -103,15 +104,26 @@ model Translation {
   @@map("translations")
 }
 
-model UserStat {
+model UserCard {
   id          Int      @id @default(autoincrement())
   userId      Int
   User        User     @relation(fields: [userId], references: [id])
   cardId      Int
   Card        Card     @relation(fields: [cardId], references: [id])
-  easeCounter Int      @default(0)
+  boxId       Int
+  Box         Box      @relation(fields: [boxId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@map("userStats")
+  @@map("userCards")
+}
+
+model Box {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  UserCard  UserCard[]
+
+  @@map("boxes")
 }

@@ -8,6 +8,10 @@ async function findByUserId(userId: number) {
   });
 }
 
+async function findByToken(token: string) {
+  return prisma.session.findFirst({ where: { token } });
+}
+
 async function createSession(token: string, userId: number) {
   const session = prisma.session.findFirst({
     where: { userId },
@@ -27,6 +31,7 @@ async function createSession(token: string, userId: number) {
 const sessionRepository = {
   createSession,
   findByUserId,
+  findByToken,
 };
 
 export default sessionRepository;

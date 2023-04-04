@@ -16,8 +16,15 @@ async function findMany(session: number) {
   });
 }
 
+async function findBox(boxId: number) {
+  return prisma.box.findUnique({
+    where: { id: boxId },
+  });
+}
+
 const boxRepository = {
   findMany,
+  findBox,
 };
 
 export default boxRepository;

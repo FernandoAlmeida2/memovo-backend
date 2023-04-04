@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from "./config/database";
 import { userRouter } from "./routers/user-router";
 import { sessionRouter } from "./routers/session-router";
 import { cardRouter } from "./routers/card-router";
+import { userCardsRouter } from "./routers/userCards-router";
 
 const app = express();
 
@@ -13,7 +14,8 @@ app
   .get("/health", (req: Request, res: Response) => res.send("OK!"))
   .use("/users", userRouter)
   .use("/auth", sessionRouter)
-  .use("/cards", cardRouter);
+  .use("/cards", cardRouter)
+  .use("/userCards", userCardsRouter);
 
 export function init(): Promise<Express> {
   connectDB();

@@ -5,4 +5,3 @@ import { authenticateToken } from "../middlewares/authentication-middleware";
 export const cardRouter = Router();
 
 cardRouter.all("/*", authenticateToken).get("/:numCards", getCardSession);
-

@@ -32,11 +32,24 @@ async function findSessionCards(userId: number, boxesId: boxesIdArray) {
   });
 }
 
+async function findUserCard(userId: number, cardId: number) {
+  return prisma.userCard.findFirst({
+    where: {
+      userId,
+      cardId,
+    },
+    select: {
+      boxId: true,
+    },
+  });
+}
+
 export type boxesIdArray = { boxId: number }[];
 
 const userCardRepository = {
   createUserDeck,
   findSessionCards,
+  findUserCard,
 };
 
 export default userCardRepository;

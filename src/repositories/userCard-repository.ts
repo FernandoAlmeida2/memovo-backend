@@ -38,8 +38,19 @@ async function findUserCard(userId: number, cardId: number) {
       userId,
       cardId,
     },
-    select: {
-      boxId: true,
+  });
+}
+
+async function updateBox(id: number, newBox: string) {
+  const { id: newBoxId } = await prisma.box.findFirst({
+    where: { name: newBox },
+  });
+  return prisma.userCard.update({
+    where: {
+      id,
+    },
+    data: {
+      boxId: newBoxId,
     },
   });
 }
@@ -50,6 +61,7 @@ const userCardRepository = {
   createUserDeck,
   findSessionCards,
   findUserCard,
+  updateBox,
 };
 
 export default userCardRepository;

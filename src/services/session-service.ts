@@ -21,18 +21,16 @@ async function signIn(data: SignInParams) {
   let token: string;
   
   const sessionExists = await sessionRepository.findByUserId(userExists.id);
-  if (sessionExists) {
-    token = sessionExists.token;
-  } else {
+  if (!sessionExists) {
     token = generateToken(userExists.id);
     await sessionRepository.createSession(token, userExists.id);
+  } else {
+    token = sessionExists.token;
   }
 
-  delete userExists.password;
-  delete userExists.updatedAt;
-
   return {
-    user: userExists,
+    name: userExists.name,
+    userId: userExists.id,
     token,
   };
 }

@@ -15,7 +15,6 @@ model User {
   name           String
   email          String     @unique @db.VarChar(255)
   password       String     @db.VarChar(255)
-  currentSession Int        @default(0)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
   Session        Session[]

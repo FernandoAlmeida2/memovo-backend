@@ -13,13 +13,6 @@ async function findByToken(token: string) {
 }
 
 async function createSession(token: string, userId: number) {
-  const session = prisma.session.findFirst({
-    where: { userId },
-  });
-  if (session) {
-    return session;
-  }
-
   return prisma.session.create({
     data: {
       token,

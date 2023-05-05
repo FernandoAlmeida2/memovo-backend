@@ -1,21 +1,19 @@
 import { prisma } from "../config/database";
-import { SESSION_BOXES } from "../constants/userCard-constants";
 
 async function createUserDeck(userId: number) {
   const userDeck = [];
   const { id: boxId } = await prisma.box.findFirst({
     where: { name: "CURRENT" },
   });
-  const totalOfCards = await prisma.card.count();
-  const { id: initialId } = await prisma.card.findFirst();
-  for (let cardId = initialId; cardId <= totalOfCards; cardId++) {
+  const cards = await prisma.card.findMany();
+  for (let i = 0; i < cards.length; i++) {
     userDeck.push({
       userId,
-      cardId,
+      cardId: cards[i].id,
       boxId,
     });
   }
-  return prisma.userCard.createMany({
+  return await prisma.userCard.createMany({
     data: userDeck,
   });
 }

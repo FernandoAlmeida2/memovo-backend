@@ -6,7 +6,6 @@ export function createValidBody() {
     name: faker.name.firstName(),
     email: faker.internet.email(),
     password,
-    repeat_password: password,
   };
 }
 

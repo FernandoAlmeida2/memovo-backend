@@ -7,7 +7,7 @@ export function validateBody(schema: ObjectSchema): ValidationMiddleware {
     const { error } = schema.validate(req.body, { abortEarly: false });
     if (error) {
       res
-        .status(httpStatus.UNPROCESSABLE_ENTITY)
+        .status(httpStatus.BAD_REQUEST)
         .send(error.details.map((detail) => detail.message));
       return;
     }

@@ -1,0 +1,21 @@
+name: Pull Request on GitHub
+on: [pull_request]
+jobs:
+  PullRequest-GitHub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Make a new .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_PORT: 4000
+          envkey_POSTGRES_PASSWORD: "postgres"
+          envkey_POSTGRES_USER: "postgres"
+          envkey_POSTGRES_DB: "memovodb_test"
+          envkey_JWT_SECRET: bab4b1ba7999812e6909b4e08ac8bc45
+          envkey_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/memovodb_test?schema=public"
+          directory: memovo-backend
+          file_name: .env.test
+      - name: Run tests
+        run: docker-compose -f docker-compose-test.yml run node npm run test

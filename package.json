@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "commonjs",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "npm run dev:migrate:deploy && npm run prisma:seed && node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "dev:migration-generate": "npx prisma migrate dev",
-    "prisma:seed": "npx prisma db seed"
+    "test:migration-generate": "npx dotenv -e .env.test npx prisma migrate dev --name memovo postgres-init",
+    "prisma:seed": "npx prisma db seed",
+    "dev:migrate:deploy": "prisma migrate deploy",
+    "test:migrate:deploy": "npx dotenv -e .env.test prisma migrate deploy && npm run prisma:seed",
+    "test": "npm run test:migrate:deploy && npx dotenv -e .env.test npx jest -- --runInBand",
+    "test:coverage": "npx dotenv -e .env.test npx jest -- --runInBand --coverage",
+    "test:prisma:seed": "npx dotenv -e .env.test npx prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed"
@@ -29,13 +34,20 @@
     "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.10",
+    "@types/supertest": "^2.0.12",
+    "dotenv-cli": "^7.2.1",
+    "jest": "^29.5.0",
     "nodemon": "^2.0.21",
     "prisma": "^4.11.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   }

@@ -2,7 +2,7 @@
   "name": "memovo-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "tsc",
     "start": "npm run dev:migrate:deploy && npm run prisma:seed && node dist/src/server.js",

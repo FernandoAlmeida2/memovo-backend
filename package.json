@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run dev:migrate:deploy && npm run prisma:seed && node dist/src/server.js",
+    "start": "npm run dev:migrate:deploy && node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "dev:migration-generate": "npx prisma migrate dev",
     "test:migration-generate": "npx dotenv -e .env.test npx prisma migrate dev --name memovo postgres-init",

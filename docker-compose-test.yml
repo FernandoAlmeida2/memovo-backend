@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    env_file:
+      - memovo-backend/.env.test
+    ports:
+      - 5433:5432
+  node:
+    container_name: node
+    build: ./memovo-backend
+    ports:
+      - 4000:4000
+    env_file:
+      - memovo-backend/.env.test
+    depends_on:
+      - postgres

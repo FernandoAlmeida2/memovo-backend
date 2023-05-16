@@ -12,7 +12,8 @@
     "prisma:seed": "npx prisma db seed",
     "dev:migrate:deploy": "prisma migrate deploy",
     "test:migrate:deploy": "npx dotenv -e .env.test prisma migrate deploy && npm run prisma:seed",
-    "test": "npm run test:migrate:deploy && npx dotenv -e .env.test npx jest -- --runInBand",
+    "ci:test": "npm run test:migrate:deploy && npx dotenv -e .env.test npx jest -- --runInBand",
+    "test": "npx dotenv -e .env.test npx jest -- --runInBand",
     "test:coverage": "npx dotenv -e .env.test npx jest -- --runInBand --coverage",
     "test:prisma:seed": "npx dotenv -e .env.test npx prisma db seed"
   },

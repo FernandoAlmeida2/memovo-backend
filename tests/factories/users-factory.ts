@@ -1,4 +1,7 @@
 import { faker } from "@faker-js/faker";
+import { prisma } from "../../src/config/database";
+import { NewUser } from "../../src/protocols/user";
+import bcrypt from "bcrypt";
 
 export function createValidBody() {
   const password = faker.internet.password(15, false, /^[a-zA-Z0-9]*$/);
@@ -26,4 +29,14 @@ export function createInvalidBody(field: string) {
     password,
     repeat_password: faker.internet.password(15, false, /^[a-zA-Z0-9]*$/),
   };
+}
+
+export async function createUser(body: NewUser) {
+  const hashedPassword = await bcrypt.hash(body.password, 10);
+  return prisma.user.create({
+    data: {
+      ...body,
+      password: hashedPassword,
+    },
+  });
 }
